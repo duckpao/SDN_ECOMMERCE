@@ -1,0 +1,42 @@
+[
+  {
+    "_id": {
+      "$oid": "6840b1f3a7c9d4e5f6b1c001"
+    },
+    "name": "Chăm sóc cá nhân",
+    "description": "Sản phẩm chăm sóc cơ thể",
+    "isActive": true
+  },
+  {
+    "_id": {
+      "$oid": "6840b1f3a7c9d4e5f6b1c002"
+    },
+    "name": "Giặt tẩy",
+    "description": "Sản phẩm giặt giũ và vệ sinh",
+    "isActive": true
+  },
+  {
+    "_id": {
+      "$oid": "6840b1f3a7c9d4e5f6b1c003"
+    },
+    "name": "Đồ uống",
+    "description": "Nước uống, trà, cà phê",
+    "isActive": true
+  },
+  {
+    "_id": {
+      "$oid": "6840b1f3a7c9d4e5f6b1c004"
+    },
+    "name": "Đồ ăn nhanh",
+    "description": "Bánh kẹo, mì, snack",
+    "isActive": true
+  },
+  {
+    "_id": {
+      "$oid": "6840b1f3a7c9d4e5f6b1c005"
+    },
+    "name": "Gia dụng",
+    "description": "Sản phẩm dùng trong gia đình",
+    "isActive": true
+  }
+]

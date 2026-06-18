@@ -1,0 +1,54 @@
+[
+  {
+    "_id": {
+      "$oid": "6840b1f3a7c9d4e5f6e6a001"
+    },
+    "order": {
+      "$oid": "6840b1f3a7c9d4e5f6a3d001"
+    },
+    "user": {
+      "$oid": "6840b1f3a7c9d4e5f6a1b001"
+    },
+    "method": "COD",
+    "amount": 223000,
+    "status": "pending",
+    "transactionCode": "",
+    "paidAt": null
+  },
+  {
+    "_id": {
+      "$oid": "6840b1f3a7c9d4e5f6e6a002"
+    },
+    "order": {
+      "$oid": "6840b1f3a7c9d4e5f6a3d002"
+    },
+    "user": {
+      "$oid": "6840b1f3a7c9d4e5f6a1b002"
+    },
+    "method": "BANKING",
+    "amount": 237000,
+    "status": "success",
+    "transactionCode": "BANK20260602001",
+    "paidAt": {
+      "$date": "2026-06-02T08:35:00Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6840b1f3a7c9d4e5f6e6a003"
+    },
+    "order": {
+      "$oid": "6840b1f3a7c9d4e5f6a3d003"
+    },
+    "user": {
+      "$oid": "6840b1f3a7c9d4e5f6a1b003"
+    },
+    "method": "MOMO",
+    "amount": 198000,
+    "status": "success",
+    "transactionCode": "MOMO20260601001",
+    "paidAt": {
+      "$date": "2026-06-01T07:20:00Z"
+    }
+  }
+]

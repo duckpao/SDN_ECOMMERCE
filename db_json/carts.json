@@ -1,0 +1,51 @@
+[
+  {
+    "_id": {
+      "$oid": "6840b1f3a7c9d4e5f6c4e001"
+    },
+    "user": {
+      "$oid": "6840b1f3a7c9d4e5f6a1b001"
+    },
+    "items": [
+      {
+        "product": {
+          "$oid": "6840b1f3a7c9d4e5f6a2c002"
+        },
+        "productName": "Nước giặt OMO Matic 3.6kg",
+        "unitPrice": 169000,
+        "quantity": 1,
+        "subtotal": 169000
+      },
+      {
+        "product": {
+          "$oid": "6840b1f3a7c9d4e5f6a2c004"
+        },
+        "productName": "Coca-Cola lon 320ml",
+        "unitPrice": 9000,
+        "quantity": 6,
+        "subtotal": 54000
+      }
+    ],
+    "totalAmount": 223000
+  },
+  {
+    "_id": {
+      "$oid": "6840b1f3a7c9d4e5f6c4e002"
+    },
+    "user": {
+      "$oid": "6840b1f3a7c9d4e5f6a1b002"
+    },
+    "items": [
+      {
+        "product": {
+          "$oid": "6840b1f3a7c9d4e5f6a2c005"
+        },
+        "productName": "Mì Hảo Hảo tôm chua cay",
+        "unitPrice": 4500,
+        "quantity": 10,
+        "subtotal": 45000
+      }
+    ],
+    "totalAmount": 45000
+  }
+]

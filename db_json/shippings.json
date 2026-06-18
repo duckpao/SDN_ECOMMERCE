@@ -1,0 +1,48 @@
+[
+  {
+    "_id": {
+      "$oid": "6840b1f3a7c9d4e5f6a8c001"
+    },
+    "order": {
+      "$oid": "6840b1f3a7c9d4e5f6a3d001"
+    },
+    "shipperName": "Nguyễn Văn Shipper",
+    "shipperPhone": "0911111111",
+    "status": "waiting",
+    "shippedAt": null,
+    "deliveredAt": null,
+    "note": "Chờ xác nhận đơn"
+  },
+  {
+    "_id": {
+      "$oid": "6840b1f3a7c9d4e5f6a8c002"
+    },
+    "order": {
+      "$oid": "6840b1f3a7c9d4e5f6a3d002"
+    },
+    "shipperName": "Lê Văn Giao",
+    "shipperPhone": "0922222222",
+    "status": "picked_up",
+    "shippedAt": {
+      "$date": "2026-06-02T10:00:00Z"
+    },
+    "deliveredAt": null,
+    "note": "Đã lấy hàng từ kho"
+  },
+  {
+    "_id": {
+      "$oid": "6840b1f3a7c9d4e5f6a8c003"
+    },
+    "order": {
+      "$oid": "6840b1f3a7c9d4e5f6a3d003"
+    },
+    "shipperName": "Phạm Văn Ship",
+    "shipperPhone": "0934444444",
+    "status": "delivering",
+    "shippedAt": {
+      "$date": "2026-06-01T09:00:00Z"
+    },
+    "deliveredAt": null,
+    "note": "Đang giao hàng"
+  }
+]

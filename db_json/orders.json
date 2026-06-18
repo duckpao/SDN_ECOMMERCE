@@ -1,0 +1,143 @@
+[
+  {
+    "_id": {
+      "$oid": "6840b1f3a7c9d4e5f6a3d001"
+    },
+    "user": {
+      "$oid": "6840b1f3a7c9d4e5f6a1b001"
+    },
+    "shippingAddress": {
+      "receiverName": "Vũ Thị Lan",
+      "receiverPhone": "0901234567",
+      "street": "12 Trần Hưng Đạo",
+      "district": "Hoàn Kiếm",
+      "city": "Hà Nội"
+    },
+    "items": [
+      {
+        "product": {
+          "$oid": "6840b1f3a7c9d4e5f6a2c001"
+        },
+        "productName": "Kem đánh răng P/S Bảo Vệ 123",
+        "unitPrice": 39000,
+        "quantity": 2,
+        "subtotal": 78000
+      },
+      {
+        "product": {
+          "$oid": "6840b1f3a7c9d4e5f6a2c003"
+        },
+        "productName": "Dầu gội Head & Shoulders 650ml",
+        "unitPrice": 145000,
+        "quantity": 1,
+        "subtotal": 145000
+      }
+    ],
+    "totalAmount": 223000,
+    "discountAmount": 0,
+    "finalAmount": 223000,
+    "status": "pending",
+    "paymentMethod": "COD",
+    "paymentStatus": "unpaid",
+    "createdAt": {
+      "$date": "2026-06-03T10:00:00Z"
+    },
+    "updatedAt": {
+      "$date": "2026-06-03T10:00:00Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6840b1f3a7c9d4e5f6a3d002"
+    },
+    "user": {
+      "$oid": "6840b1f3a7c9d4e5f6a1b002"
+    },
+    "shippingAddress": {
+      "receiverName": "Nguyễn Văn Minh",
+      "receiverPhone": "0912345678",
+      "street": "21 Nguyễn Trãi",
+      "district": "Thanh Xuân",
+      "city": "Hà Nội"
+    },
+    "items": [
+      {
+        "product": {
+          "$oid": "6840b1f3a7c9d4e5f6a2c002"
+        },
+        "productName": "Nước giặt OMO Matic 3.6kg",
+        "unitPrice": 169000,
+        "quantity": 1,
+        "subtotal": 169000
+      },
+      {
+        "product": {
+          "$oid": "6840b1f3a7c9d4e5f6a2c006"
+        },
+        "productName": "Nước rửa chén Sunlight 750g",
+        "unitPrice": 39000,
+        "quantity": 2,
+        "subtotal": 78000
+      }
+    ],
+    "totalAmount": 247000,
+    "discountAmount": 10000,
+    "finalAmount": 237000,
+    "status": "confirmed",
+    "paymentMethod": "BANKING",
+    "paymentStatus": "paid",
+    "createdAt": {
+      "$date": "2026-06-02T08:30:00Z"
+    },
+    "updatedAt": {
+      "$date": "2026-06-02T09:00:00Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6840b1f3a7c9d4e5f6a3d003"
+    },
+    "user": {
+      "$oid": "6840b1f3a7c9d4e5f6a1b003"
+    },
+    "shippingAddress": {
+      "receiverName": "Trần Thu Hà",
+      "receiverPhone": "0987654321",
+      "street": "99 Lê Lợi",
+      "district": "Hải Châu",
+      "city": "Đà Nẵng"
+    },
+    "items": [
+      {
+        "product": {
+          "$oid": "6840b1f3a7c9d4e5f6a2c004"
+        },
+        "productName": "Coca-Cola lon 320ml",
+        "unitPrice": 9000,
+        "quantity": 12,
+        "subtotal": 108000
+      },
+      {
+        "product": {
+          "$oid": "6840b1f3a7c9d4e5f6a2c005"
+        },
+        "productName": "Mì Hảo Hảo tôm chua cay",
+        "unitPrice": 4500,
+        "quantity": 20,
+        "subtotal": 90000
+      }
+    ],
+    "totalAmount": 198000,
+    "discountAmount": 0,
+    "finalAmount": 198000,
+    "status": "shipping",
+    "paymentMethod": "MOMO",
+    "paymentStatus": "paid",
+    "createdAt": {
+      "$date": "2026-06-01T07:15:00Z"
+    },
+    "updatedAt": {
+      "$date": "2026-06-01T08:00:00Z"
+    }
+  }
+]

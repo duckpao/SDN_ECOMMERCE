@@ -1,0 +1,56 @@
+[
+  {
+    "_id": {
+      "$oid": "6840b1f3a7c9d4e5f6b2d001"
+    },
+    "name": "P/S",
+    "country": "Vietnam",
+    "description": "Oral care brand",
+    "isActive": true
+  },
+  {
+    "_id": {
+      "$oid": "6840b1f3a7c9d4e5f6b2d002"
+    },
+    "name": "OMO",
+    "country": "Vietnam",
+    "description": "Laundry brand",
+    "isActive": true
+  },
+  {
+    "_id": {
+      "$oid": "6840b1f3a7c9d4e5f6b2d003"
+    },
+    "name": "Head & Shoulders",
+    "country": "USA",
+    "description": "Hair care brand",
+    "isActive": true
+  },
+  {
+    "_id": {
+      "$oid": "6840b1f3a7c9d4e5f6b2d004"
+    },
+    "name": "Coca-Cola",
+    "country": "USA",
+    "description": "Beverage brand",
+    "isActive": true
+  },
+  {
+    "_id": {
+      "$oid": "6840b1f3a7c9d4e5f6b2d005"
+    },
+    "name": "Hảo Hảo",
+    "country": "Vietnam",
+    "description": "Instant noodle brand",
+    "isActive": true
+  },
+  {
+    "_id": {
+      "$oid": "6840b1f3a7c9d4e5f6b2d006"
+    },
+    "name": "Sunlight",
+    "country": "Vietnam",
+    "description": "Home cleaning brand",
+    "isActive": true
+  }
+]

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Danh mục (Categories)</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>🏷️ Quản lý Danh mục</h2>
+        <button class="btn btn-primary" onclick="openCreateModal()">
+            <i class="bi bi-plus-circle"></i> Thêm mới
+        </button>
+    </div>
+
+    <div id="alertBox" class="alert d-none" role="alert"></div>
+
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <div class="input-group">
+                <input type="text" id="searchInput" class="form-control" placeholder="Nhập tên danh mục để tìm...">
+                <button class="btn btn-outline-secondary" onclick="handleSearch()">Tìm kiếm</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Tên danh mục</th>
+                        <th>Mô tả</th>
+                        <th>Trạng thái</th>
+                        <th class="text-center">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    </tbody>
+            </table>
+
+            <nav>
+                <ul class="pagination justify-content-end mb-0" id="paginationBox">
+                    </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="categoryModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Thêm Danh mục</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="categoryForm">
+                    <input type="hidden" id="categoryId">
+                    <div class="mb-3">
+                        <label class="form-label">Tên danh mục <span class="text-danger">*</span></label>
+                        <input type="text" id="catName" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Mô tả</label>
+                        <textarea id="catDesc" class="form-control" rows="3"></textarea>
+                    </div>
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input" type="checkbox" id="catIsActive" checked>
+                        <label class="form-check-label">Hoạt động (isActive)</label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-success" onclick="saveCategory()">Lưu dữ liệu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // URL Backend của bạn (Điều chỉnh lại port nếu cần)
+    const API_URL = "http://localhost:9999/categories"; 
+    
+    let currentPage = 1;
+    let currentSearch = "";
+    const categoryModal = new bootstrap.Modal(document.getElementById('categoryModal'));
+
+    // 1. HÀM HIỂN THỊ THÔNG BÁO
+    function showAlert(message, type = 'danger') {
+        const alertBox = document.getElementById('alertBox');
+        alertBox.className = `alert alert-${type}`;
+        alertBox.innerText = message;
+        alertBox.classList.remove('d-none');
+        setTimeout(() => alertBox.classList.add('d-none'), 3000);
+    }
+
+    // 2. HÀM LOAD DANH SÁCH & PHÂN TRANG (GET)
+    async function loadCategories(page = 1, search = "") {
+        try {
+            const res = await fetch(`${API_URL}?page=${page}&limit=5&search=${search}`);
+            const json = await res.json();
+            
+            if (res.ok) {
+                renderTable(json.data);
+                renderPagination(json.page, json.totalPages);
+            } else {
+                showAlert(json.message);
+            }
+        } catch (error) {
+            showAlert("Lỗi kết nối máy chủ!");
+        }
+    }
+
+    // 3. RENDER BẢNG
+    function renderTable(data) {
+        const tbody = document.getElementById('tableBody');
+        tbody.innerHTML = "";
+
+        if (data.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="4" class="text-center text-muted">Không tìm thấy dữ liệu</td></tr>`;
+            return;
+        }
+
+        data.forEach(item => {
+            const statusBadge = item.isActive 
+                ? `<span class="badge bg-success">Đang hoạt động</span>` 
+                : `<span class="badge bg-secondary">Tạm ẩn</span>`;
+
+            tbody.innerHTML += `
+                <tr>
+                    <td class="fw-bold">${item.name}</td>
+                    <td>${item.description || '<i class="text-muted">Không có mô tả</i>'}</td>
+                    <td>${statusBadge}</td>
+                    <td class="text-center">
+                        <button class="btn btn-sm btn-outline-primary me-1" onclick="openEditModal('${item._id}')">
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteCategory('${item._id}')">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    // 4. RENDER NÚT PHÂN TRANG
+    function renderPagination(page, totalPages) {
+        const paginationBox = document.getElementById('paginationBox');
+        paginationBox.innerHTML = "";
+
+        for (let i = 1; i <= totalPages; i++) {
+            const activeClass = (i === page) ? 'active' : '';
+            paginationBox.innerHTML += `
+                <li class="page-item ${activeClass}">
+                    <button class="page-link" onclick="changePage(${i})">${i}</button>
+                </li>
+            `;
+        }
+    }
+
+    // 5. TÌM KIẾM VÀ ĐỔI TRANG
+    function handleSearch() {
+        currentSearch = document.getElementById('searchInput').value;
+        currentPage = 1;
+        loadCategories(currentPage, currentSearch);
+    }
+
+    function changePage(page) {
+        currentPage = page;
+        loadCategories(currentPage, currentSearch);
+    }
+
+    // 6. XỬ LÝ MỞ MODAL THÊM/SỬA
+    function openCreateModal() {
+        document.getElementById('modalTitle').innerText = "Thêm Danh mục Mới";
+        document.getElementById('categoryForm').reset();
+        document.getElementById('categoryId').value = "";
+        categoryModal.show();
+    }
+
+    async function openEditModal(id) {
+        document.getElementById('modalTitle').innerText = "Chỉnh sửa Danh mục";
+        try {
+            const res = await fetch(`${API_URL}/${id}`);
+            const json = await res.json();
+            
+            if (res.ok) {
+                const cat = json.data;
+                document.getElementById('categoryId').value = cat._id;
+                document.getElementById('catName').value = cat.name;
+                document.getElementById('catDesc').value = cat.description || "";
+                document.getElementById('catIsActive').checked = cat.isActive;
+                categoryModal.show();
+            } else {
+                showAlert(json.message);
+            }
+        } catch (error) {
+            showAlert("Lỗi khi lấy thông tin danh mục!");
+        }
+    }
+
+    // 7. LƯU DỮ LIỆU (POST / PUT)
+    async function saveCategory() {
+        const id = document.getElementById('categoryId').value;
+        const name = document.getElementById('catName').value;
+        const description = document.getElementById('catDesc').value;
+        const isActive = document.getElementById('catIsActive').checked;
+
+        if (!name) {
+            alert("Vui lòng nhập tên danh mục!");
+            return;
+        }
+
+        const method = id ? "PUT" : "POST";
+        const url = id ? `${API_URL}/${id}` : API_URL;
+
+        try {
+            const res = await fetch(url, {
+                method: method,
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, description, isActive })
+            });
+            const json = await res.json();
+
+            if (res.ok) {
+                showAlert(id ? "Cập nhật thành công!" : "Thêm mới thành công!", "success");
+                categoryModal.hide();
+                loadCategories(currentPage, currentSearch);
+            } else {
+                // Sẽ hiển thị chính xác lỗi "Category name is existed" từ backend
+                showAlert(json.message || "Có lỗi xảy ra!"); 
+            }
+        } catch (error) {
+            showAlert("Lỗi kết nối khi lưu dữ liệu!");
+        }
+    }
+
+    // 8. XÓA DANH MỤC (DELETE)
+    async function deleteCategory(id) {
+        if (!confirm("Bạn có chắc chắn muốn xóa vĩnh viễn danh mục này không?")) return;
+
+        try {
+            const res = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+            const json = await res.json();
+
+            if (res.ok) {
+                showAlert("Xóa thành công!", "success");
+                loadCategories(currentPage, currentSearch);
+            } else {
+                showAlert(json.message);
+            }
+        } catch (error) {
+            showAlert("Lỗi kết nối khi xóa dữ liệu!");
+        }
+    }
+
+    // Khởi chạy load dữ liệu khi vào trang
+    loadCategories();
+</script>
+</body>
+</html>
