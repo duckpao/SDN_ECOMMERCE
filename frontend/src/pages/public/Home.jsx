@@ -1,6 +1,8 @@
-﻿import { useState, useEffect } from "react";
+﻿/* eslint-disable no-unused-vars */
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import api from "../../api";
+import ProductCard from "../../components/public/ProductCard";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -11,10 +13,6 @@ export default function Home() {
     api.get("/categories").then((r) => setCategories(r.data.data));
   }, []);
 
-  const normalizeImage = (value) => {
-    if (!value) return "/images/products/download.webp";
-    return value;
-  };
 
   return (
     <>
@@ -43,27 +41,6 @@ export default function Home() {
       </section>
 
       {/* CATEGORIES - Cấu trúc thẻ mềm mại */}
-      <section className="container mb-5">
-        <div className="d-flex align-items-center mb-4">
-          <h3 className="fw-bold mb-0">Danh mục nổi bật</h3>
-        </div>
-        <div className="d-flex flex-wrap gap-3">
-          {categories.map((cat) => (
-            <Link
-              key={cat._id}
-              to={"/products?category=" + cat._id}
-              className="btn btn-white bg-white border-0 shadow-sm rounded-pill px-4 py-2 fw-medium text-dark text-decoration-none"
-              style={{ transition: "all 0.2s" }}
-              onMouseOver={(e) => e.currentTarget.classList.add('shadow')}
-              onMouseOut={(e) => e.currentTarget.classList.remove('shadow')}
-            >
-              {cat.name}
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* PRODUCTS */}
       <section id="products" className="container pb-5">
         <div className="d-flex justify-content-between align-items-center mb-4">
           <h3 className="fw-bold mb-0">Sản phẩm gợi ý</h3>
@@ -72,59 +49,11 @@ export default function Home() {
           </Link>
         </div>
 
+        {/* Thay thế toàn bộ khối map cũ bằng ProductCard */}
         <div className="row g-4">
-          {products.map((p) => {
-            const displayPrice = p.discountPrice > 0 ? p.discountPrice : p.price;
-            const hasDiscount = p.discountPrice > 0;
-            const discountPercent = hasDiscount ? Math.round((1 - p.discountPrice / p.price) * 100) : 0;
-
-            return (
-              <div key={p._id} className="col-6 col-md-4 col-lg-3">
-                <Link to={`/products`} className="text-decoration-none text-dark">
-                  <div className="card h-100 border-0 shadow-sm rounded-4 overflow-hidden h-100" style={{ transition: "transform 0.2s" }} onMouseOver={(e) => e.currentTarget.style.transform = "translateY(-5px)"} onMouseOut={(e) => e.currentTarget.style.transform = "translateY(0)"}>
-                    <div className="position-relative bg-white p-3">
-                      <img
-                        src={normalizeImage(p.image)}
-                        className="card-img-top rounded-4"
-                        alt={p.name}
-                        style={{ aspectRatio: "1/1", objectFit: "cover" }}
-                        loading="lazy"
-                        onError={(e) => {
-                          e.target.onerror = null;
-                          e.target.src = "/images/products/download.webp";
-                        }}
-                      />
-                      {hasDiscount && (
-                        <span className="position-absolute top-0 end-0 badge bg-danger rounded-pill m-3 px-2 py-1 shadow-sm">
-                          -{discountPercent}%
-                        </span>
-                      )}
-                    </div>
-                    <div className="card-body p-3 pt-0 d-flex flex-column">
-                      <p className="text-muted small mb-1">{p.brand?.name || "Thương hiệu"}</p>
-                      <h6 className="card-title text-truncate mb-2 fw-semibold" title={p.name}>{p.name}</h6>
-                      <div className="mt-auto">
-                        {hasDiscount ? (
-                          <div className="d-flex flex-column">
-                            <span className="fw-bold text-danger fs-5">
-                              {displayPrice.toLocaleString()} ₫
-                            </span>
-                            <span className="text-muted text-decoration-line-through small">
-                              {p.price.toLocaleString()} ₫
-                            </span>
-                          </div>
-                        ) : (
-                          <span className="fw-bold text-dark fs-5">
-                            {displayPrice.toLocaleString()} ₫
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              </div>
-            );
-          })}
+          {products.map((p) => (
+            <ProductCard key={p._id} product={p} />
+          ))}
         </div>
       </section>
     </>
