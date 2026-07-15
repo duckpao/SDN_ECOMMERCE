@@ -21,7 +21,7 @@ export default function PublicLayout() {
 
             {user ? (
               <div className="d-flex gap-2">
-                <Link to="/dashboard" className="btn btn-light rounded-pill fw-medium">
+                <Link to="/profile" className="btn btn-light rounded-pill fw-medium">
                   <i className="bi bi-person-circle me-2 text-primary"></i>
                   {user.fullName}
                 </Link>
