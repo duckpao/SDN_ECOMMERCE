@@ -25,6 +25,9 @@ export default function PublicLayout() {
                   <i className="bi bi-person-circle me-2 text-primary"></i>
                   {user.fullName}
                 </Link>
+                <Link to="/cart" className="btn btn-outline-dark rounded-pill ms-2">
+                  <i className="bi bi-cart"></i>
+                </Link>
                 {user.role === "admin" && (
                   <Link to="/admin" className="btn btn-outline-dark rounded-pill fw-medium">
                     <i className="bi bi-gear"></i>

@@ -1,4 +1,5 @@
 const Cart = require('../models/cart');
+const Product = require('../models/product');
 
 const getAllCarts = async (req, res) => {
   try {
@@ -20,6 +21,76 @@ const getAllCarts = async (req, res) => {
       totalPages: Math.ceil(total / limit),
       data,
     });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+const addToCart = async (req, res) => {
+  try {
+    const { productId, quantity } = req.body; // Lấy từ frontend gửi lên
+    const userId = req.user._id; // Giả định bạn có middleware lấy user
+
+    // 1. Tìm sản phẩm để lấy giá
+    const product = await Product.findById(productId);
+    if (!product) return res.status(404).json({ message: 'Sản phẩm không tồn tại' });
+
+    // 2. Tìm giỏ hàng của user
+    let cart = await Cart.findOne({ user: userId });
+
+    // 3. Nếu chưa có giỏ hàng, tạo mới
+    if (!cart) {
+      cart = await Cart.create({
+        user: userId,
+        items: [{
+          product: productId,
+          productName: product.name,
+          unitPrice: product.discountPrice > 0 ? product.discountPrice : product.price,
+          quantity: quantity,
+          subtotal: (product.discountPrice > 0 ? product.discountPrice : product.price) * quantity
+        }],
+        totalAmount: (product.discountPrice > 0 ? product.discountPrice : product.price) * quantity
+      });
+      return res.status(201).json({ message: 'Đã thêm vào giỏ hàng', data: cart });
+    }
+
+    // 4. Nếu đã có giỏ hàng, kiểm tra sản phẩm đã tồn tại trong items chưa
+    const itemIndex = cart.items.findIndex(item => item.product.toString() === productId);
+
+    if (itemIndex > -1) {
+      // Cập nhật số lượng nếu đã có
+      cart.items[itemIndex].quantity += quantity;
+      cart.items[itemIndex].subtotal = cart.items[itemIndex].quantity * cart.items[itemIndex].unitPrice;
+    } else {
+      // Thêm mới nếu chưa có
+      cart.items.push({
+        product: productId,
+        productName: product.name,
+        unitPrice: product.discountPrice > 0 ? product.discountPrice : product.price,
+        quantity: quantity,
+        subtotal: (product.discountPrice > 0 ? product.discountPrice : product.price) * quantity
+      });
+    }
+
+    // 5. Cập nhật lại totalAmount
+    cart.totalAmount = cart.items.reduce((acc, item) => acc + item.subtotal, 0);
+    await cart.save();
+
+    return res.status(200).json({ message: 'Đã cập nhật giỏ hàng', data: cart });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+const getMyCart = async (req, res) => {
+  try {
+    const cart = await Cart.findOne({ user: req.user._id })
+      .populate('items.product', 'name price image');
+
+    if (!cart) {
+      return res.status(404).json({ message: "Giỏ hàng trống" });
+    }
+    return res.status(200).json({ message: "Lấy giỏ hàng thành công", data: cart });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -64,10 +135,31 @@ const deleteCart = async (req, res) => {
   }
 };
 
+const removeItem = async (req, res) => {
+  try {
+    const { productId } = req.params;
+    const userId = req.user._id;
+
+    const cart = await Cart.findOne({ user: userId });
+    if (!cart) return res.status(404).json({ message: 'Không tìm thấy giỏ hàng' });
+
+    cart.items = cart.items.filter(item => item.product.toString() !== productId);
+    cart.totalAmount = cart.items.reduce((acc, item) => acc + item.subtotal, 0);
+
+    await cart.save();
+    return res.status(200).json({ message: 'Đã xóa sản phẩm', data: cart });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   getAllCarts,
   getCartById,
   createCart,
   updateCart,
   deleteCart,
+  addToCart,
+  removeItem,
+  getMyCart
 };
