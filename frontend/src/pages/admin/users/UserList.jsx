@@ -27,6 +27,7 @@ const validateForm = (form, isEdit) => {
 
   if (!form.fullName.trim()) errors.fullName = "Vui long nhap ho ten";
   else if (form.fullName.trim().length < 2) errors.fullName = "Ho ten toi thieu 2 ky tu";
+  else if (form.fullName.trim().length > 80) errors.fullName = "Ho ten toi da 80 ky tu";
 
   if (!form.email.trim()) errors.email = "Vui long nhap email";
   else if (!emailRegex.test(form.email.trim())) errors.email = "Email khong hop le";
@@ -39,9 +40,8 @@ const validateForm = (form, isEdit) => {
   return errors;
 };
 
-export default function UserList() {
+export default function UserList({ userType = "customer" }) {
   const [users, setUsers] = useState([]);
-  const [roleFilter, setRoleFilter] = useState("customer");
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -54,9 +54,11 @@ export default function UserList() {
   const [disableTarget, setDisableTarget] = useState(null);
 
   const title = useMemo(
-    () => (roleFilter === "customer" ? "Quan ly Customer" : "Quan ly Nhan vien"),
-    [roleFilter],
+    () => (userType === "customer" ? "Quan ly Customer" : "Quan ly Nhan vien"),
+    [userType],
   );
+
+  const endpoint = userType === "customer" ? "/users/customers" : "/users/employees";
 
   const fetchUsers = async (targetPage = page) => {
     setLoading(true);
@@ -64,11 +66,10 @@ export default function UserList() {
       const params = new URLSearchParams({
         page: String(targetPage),
         limit: "10",
-        role: roleFilter,
       });
       if (search.trim()) params.set("search", search.trim());
 
-      const res = await api.get(`/users?${params.toString()}`);
+      const res = await api.get(`${endpoint}?${params.toString()}`);
       setUsers(res.data.data);
       setPage(res.data.page);
       setTotalPages(res.data.totalPages || 1);
@@ -81,13 +82,13 @@ export default function UserList() {
 
   useEffect(() => {
     fetchUsers(1);
-  }, [roleFilter]);
+  }, [userType]);
 
   const openCreate = () => {
     setEditItem(null);
     setForm({
       ...emptyForm,
-      role: roleFilter === "customer" ? "customer" : "staff",
+      role: userType === "customer" ? "customer" : "staff",
     });
     setErrors({});
     setShowModal(true);
@@ -124,8 +125,13 @@ export default function UserList() {
       return;
     }
 
-    const avatar = await readAvatarFile(file);
-    handleChange("avatar", avatar);
+    try {
+      const avatar = await readAvatarFile(file);
+      handleChange("avatar", avatar);
+    } catch {
+      setErrors((current) => ({ ...current, avatar: "Khong doc duoc file avatar" }));
+      event.target.value = "";
+    }
   };
 
   const handleSubmit = async (event) => {
@@ -188,24 +194,7 @@ export default function UserList() {
 
       <div className="card border-0 shadow-sm">
         <div className="card-body">
-          <div className="d-flex flex-wrap gap-3 justify-content-between align-items-center mb-3">
-            <div className="btn-group" role="group" aria-label="Loai user">
-              <button
-                type="button"
-                className={`btn ${roleFilter === "customer" ? "btn-dark" : "btn-outline-dark"}`}
-                onClick={() => setRoleFilter("customer")}
-              >
-                Customer
-              </button>
-              <button
-                type="button"
-                className={`btn ${roleFilter === "employee" ? "btn-dark" : "btn-outline-dark"}`}
-                onClick={() => setRoleFilter("employee")}
-              >
-                Nhan vien
-              </button>
-            </div>
-
+          <div className="d-flex flex-wrap gap-3 justify-content-end align-items-center mb-3">
             <form className="d-flex gap-2" onSubmit={submitSearch}>
               <input
                 className="form-control"
@@ -373,9 +362,14 @@ export default function UserList() {
                               value={form.role}
                               onChange={(event) => handleChange("role", event.target.value)}
                             >
-                              <option value="customer">Customer</option>
-                              <option value="staff">Nhan vien</option>
-                              <option value="admin">Admin</option>
+                              {userType === "customer" ? (
+                                <option value="customer">Customer</option>
+                              ) : (
+                                <>
+                                  <option value="staff">Nhan vien</option>
+                                  <option value="admin">Admin</option>
+                                </>
+                              )}
                             </select>
                             {errors.role && <div className="invalid-feedback">{errors.role}</div>}
                           </div>

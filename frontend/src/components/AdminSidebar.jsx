@@ -6,12 +6,13 @@ const menu = [
   { path: "/admin/brands", label: "Thuong hieu", icon: "bi-tag" },
   { path: "/admin/categories", label: "Danh muc", icon: "bi-grid" },
   { path: "/admin/carts", label: "Gio hang", icon: "bi-cart" },
-  { path: "/admin/users", label: "Nguoi dung", icon: "bi-people" },
+  { path: "/admin/customers", label: "Customer", icon: "bi-people" },
+  { path: "/admin/employees", label: "Nhan vien", icon: "bi-person-badge" },
 ];
 
 export default function AdminSidebar() {
   const loc = useLocation();
-  const active = (p) => loc.pathname === p || loc.pathname.startsWith(p + "/");
+  const active = (p) => (p === "/admin" ? loc.pathname === p : loc.pathname === p || loc.pathname.startsWith(p + "/"));
 
   return (
     <div className="d-flex flex-column bg-dark text-white" style={{ width: 240, minHeight: "100vh" }}>

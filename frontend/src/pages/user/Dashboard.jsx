@@ -1,5 +1,6 @@
 ﻿import { useAuth } from "../../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
+import { getAvatarSrc } from "../../utils/avatar";
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
@@ -26,7 +27,12 @@ export default function Dashboard() {
               </Link>
             )}
             <span className="text-white-50 small">
-              <i className="bi bi-person-circle me-1"></i>{user?.fullName}
+              {user?.avatar ? (
+                <img className="avatar-xs me-1" src={getAvatarSrc(user.avatar)} alt={user.fullName} />
+              ) : (
+                <i className="bi bi-person-circle me-1"></i>
+              )}
+              {user?.fullName}
             </span>
             <span className="badge bg-light text-dark">{user?.role}</span>
             <button className="btn btn-outline-light btn-sm" onClick={handleLogout}>
@@ -40,10 +46,14 @@ export default function Dashboard() {
           <div className="col-lg-4">
             <div className="card border-0 shadow-sm">
               <div className="card-body text-center p-4">
-                <div className="rounded-circle bg-dark text-white d-inline-flex align-items-center justify-content-center mb-3"
-                  style={{ width: 80, height: 80, fontSize: "2rem" }}>
-                  {user?.fullName?.charAt(0)?.toUpperCase() || <i className="bi bi-person"></i>}
-                </div>
+                {user?.avatar ? (
+                  <img className="avatar-lg mb-3" src={getAvatarSrc(user.avatar)} alt={user.fullName} />
+                ) : (
+                  <div className="rounded-circle bg-dark text-white d-inline-flex align-items-center justify-content-center mb-3"
+                    style={{ width: 80, height: 80, fontSize: "2rem" }}>
+                    {user?.fullName?.charAt(0)?.toUpperCase() || <i className="bi bi-person"></i>}
+                  </div>
+                )}
                 <h5 className="fw-bold">{user?.fullName}</h5>
                 <p className="text-muted small mb-1"><i className="bi bi-envelope me-1"></i>{user?.email}</p>
                 <p className="text-muted small mb-0"><i className="bi bi-telephone me-1"></i>{user?.phone || "Chua cap nhat"}</p>
