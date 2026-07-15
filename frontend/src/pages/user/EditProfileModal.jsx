@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
+import { getAvatarSrc, readAvatarFile, validateAvatarFile } from "../../utils/avatar";
 
 export default function EditProfileModal({
   show,
@@ -11,7 +12,9 @@ export default function EditProfileModal({
   const [form, setForm] = useState({
     fullName: "",
     phone: "",
+    avatar: "",
   });
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     if (!user) return;
@@ -19,7 +22,9 @@ export default function EditProfileModal({
     setForm({
       fullName: user.fullName || "",
       phone: user.phone || "",
+      avatar: user.avatar || "",
     });
+    setErrors({});
   }, [user]);
 
   if (!show) return null;
@@ -29,11 +34,40 @@ export default function EditProfileModal({
       ...form,
       [e.target.name]: e.target.value,
     });
+    setErrors({ ...errors, [e.target.name]: "" });
+  };
+
+  const handleAvatarChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const error = validateAvatarFile(file);
+    if (error) {
+      setErrors({ ...errors, avatar: error });
+      e.target.value = "";
+      return;
+    }
+
+    const avatar = await readAvatarFile(file);
+    setForm({ ...form, avatar });
+    setErrors({ ...errors, avatar: "" });
   };
 
   const handleSave = async () => {
+    const nextErrors = {};
+    if (!form.fullName.trim()) nextErrors.fullName = "Full name is required";
+    if (form.phone.trim() && !/^[0-9+\-\s()]{9,15}$/.test(form.phone.trim())) {
+      nextErrors.phone = "Invalid phone number";
+    }
+    setErrors(nextErrors);
+    if (Object.keys(nextErrors).length) return;
+
     try {
-      await updateProfile(form);
+      await updateProfile({
+        fullName: form.fullName.trim(),
+        phone: form.phone.trim(),
+        avatar: form.avatar,
+      });
       alert("Profile updated successfully");
       onClose();
     } catch (err) {
@@ -58,6 +92,25 @@ export default function EditProfileModal({
           </div>
 
           <div className="modal-body">
+            <div className="mb-3">
+              <label className="form-label">
+                Avatar
+              </label>
+              <div className="avatar-preview mb-2">
+                {form.avatar ? (
+                  <img src={getAvatarSrc(form.avatar)} alt="Avatar preview" />
+                ) : (
+                  <i className="bi bi-person"></i>
+                )}
+              </div>
+              <input
+                type="file"
+                className={`form-control ${errors.avatar ? "is-invalid" : ""}`}
+                accept="image/png,image/jpeg,image/jpg,image/webp"
+                onChange={handleAvatarChange}
+              />
+              {errors.avatar && <div className="invalid-feedback d-block">{errors.avatar}</div>}
+            </div>
 
             <div className="mb-3">
               <label className="form-label">
@@ -71,6 +124,7 @@ export default function EditProfileModal({
                 value={form.fullName}
                 onChange={handleChange}
               />
+              {errors.fullName && <div className="text-danger small mt-1">{errors.fullName}</div>}
             </div>
 
             <div className="mb-3">
@@ -85,6 +139,7 @@ export default function EditProfileModal({
                 value={form.phone}
                 onChange={handleChange}
               />
+              {errors.phone && <div className="text-danger small mt-1">{errors.phone}</div>}
             </div>
 
           </div>

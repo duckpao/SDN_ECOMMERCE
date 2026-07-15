@@ -10,6 +10,7 @@ import Overview from "./pages/admin/Overview";
 import BrandList from "./pages/admin/brands/BrandList";
 import CategoryList from "./pages/admin/categories/CategoryList";
 import CartList from "./pages/admin/carts/CartList";
+import UserList from "./pages/admin/users/UserList";
 import Products from "./pages/public/Products";
 import ProductDetail from "./pages/public/ProductDetail";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -43,6 +44,7 @@ export default function App() {
             <Route path="brands" element={<BrandList />} />
             <Route path="categories" element={<CategoryList />} />
             <Route path="carts" element={<CartList />} />
+            <Route path="users" element={<UserList />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/" />} />

@@ -11,10 +11,21 @@ const addressSchema = new mongoose.Schema({
 }, { _id: true });
 
 const userSchema = new mongoose.Schema({
-  fullName: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
+  fullName: { type: String, required: true, trim: true, minlength: 2, maxlength: 80 },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
+    trim: true,
+    match: [/^\S+@\S+\.\S+$/, 'Invalid email format'],
+  },
   password: { type: String, required: true },
-  phone: String,
+  phone: {
+    type: String,
+    trim: true,
+    match: [/^$|^[0-9+\-\s()]{9,15}$/, 'Invalid phone number'],
+  },
   role: { type: String, enum: ['customer', 'staff', 'admin'], default: 'customer' },
   avatar: String,
   addresses: [addressSchema],
