@@ -1,0 +1,47 @@
+﻿import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
+import PublicLayout from "./layouts/PublicLayout";
+import AdminLayout from "./layouts/AdminLayout";
+import Home from "./pages/public/Home";
+import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
+import Dashboard from "./pages/user/Dashboard";
+import Overview from "./pages/admin/Overview";
+import BrandList from "./pages/admin/brands/BrandList";
+import CategoryList from "./pages/admin/categories/CategoryList";
+import CartList from "./pages/admin/carts/CartList";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import "./App.css";
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <Routes>
+          {/* Public routes */}
+          <Route element={<PublicLayout />}>
+            <Route path="/" element={<Home />} />
+          </Route>
+
+          {/* Auth routes (full screen) */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+
+          {/* User dashboard */}
+          <Route path="/dashboard" element={<Dashboard />} />
+
+          {/* Admin routes */}
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<Overview />} />
+            <Route path="brands" element={<BrandList />} />
+            <Route path="categories" element={<CategoryList />} />
+            <Route path="carts" element={<CartList />} />
+          </Route>
+
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
+  );
+}

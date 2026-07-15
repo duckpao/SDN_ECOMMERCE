@@ -1,0 +1,232 @@
+[
+  {
+    "_id": {
+      "$oid": "6840b1f3a7c9d4e5f6a2c001"
+    },
+    "name": "Kem đánh răng P/S Bảo Vệ 123",
+    "description": "Kem đánh răng giúp bảo vệ răng miệng toàn diện.",
+    "price": 45000,
+    "discountPrice": 39000,
+    "stock": 120,
+    "image": "/images/products/kem-đánh-răng-ps-bảo-vệ-123.jpg",
+    "images": [
+      "/images/products/kem-đánh-răng-ps-bảo-vệ-123-1.jpg",
+      "/images/products/kem-đánh-răng-ps-bảo-vệ-123-2.jpg"
+    ],
+    "category": {
+      "$oid": "6840b1f3a7c9d4e5f6b1c001"
+    },
+    "brand": {
+      "$oid": "6840b1f3a7c9d4e5f6b2d001"
+    },
+    "soldQuantity": 45,
+    "isActive": true
+  },
+  {
+    "_id": {
+      "$oid": "6840b1f3a7c9d4e5f6a2c002"
+    },
+    "name": "Nước giặt OMO Matic 3.6kg",
+    "description": "Nước giặt dành cho máy giặt cửa trước và cửa trên.",
+    "price": 185000,
+    "discountPrice": 169000,
+    "stock": 50,
+    "image": "/images/products/nước-giặt-omo-matic-3.6kg.jpg",
+    "images": [
+      "/images/products/nước-giặt-omo-matic-3.6kg-1.jpg",
+      "/images/products/nước-giặt-omo-matic-3.6kg-2.jpg"
+    ],
+    "category": {
+      "$oid": "6840b1f3a7c9d4e5f6b1c002"
+    },
+    "brand": {
+      "$oid": "6840b1f3a7c9d4e5f6b2d002"
+    },
+    "soldQuantity": 22,
+    "isActive": true
+  },
+  {
+    "_id": {
+      "$oid": "6840b1f3a7c9d4e5f6a2c003"
+    },
+    "name": "Dầu gội Head & Shoulders 650ml",
+    "description": "Dầu gội sạch gàu và chăm sóc da đầu.",
+    "price": 159000,
+    "discountPrice": 145000,
+    "stock": 80,
+    "image": "/images/products/dầu-gội-head-&-shoulders-650ml.jpg",
+    "images": [
+      "/images/products/dầu-gội-head-&-shoulders-650ml-1.jpg",
+      "/images/products/dầu-gội-head-&-shoulders-650ml-2.jpg"
+    ],
+    "category": {
+      "$oid": "6840b1f3a7c9d4e5f6b1c001"
+    },
+    "brand": {
+      "$oid": "6840b1f3a7c9d4e5f6b2d003"
+    },
+    "soldQuantity": 30,
+    "isActive": true
+  },
+  {
+    "_id": {
+      "$oid": "6840b1f3a7c9d4e5f6a2c004"
+    },
+    "name": "Coca-Cola lon 320ml",
+    "description": "Nước giải khát có gas vị cola.",
+    "price": 10000,
+    "discountPrice": 9000,
+    "stock": 300,
+    "image": "/images/products/coca-cola-lon-320ml.jpg",
+    "images": [
+      "/images/products/coca-cola-lon-320ml-1.jpg",
+      "/images/products/coca-cola-lon-320ml-2.jpg"
+    ],
+    "category": {
+      "$oid": "6840b1f3a7c9d4e5f6b1c003"
+    },
+    "brand": {
+      "$oid": "6840b1f3a7c9d4e5f6b2d004"
+    },
+    "soldQuantity": 180,
+    "isActive": true
+  },
+  {
+    "_id": {
+      "$oid": "6840b1f3a7c9d4e5f6a2c005"
+    },
+    "name": "Mì Hảo Hảo tôm chua cay",
+    "description": "Mì ăn liền vị tôm chua cay.",
+    "price": 5000,
+    "discountPrice": 4500,
+    "stock": 500,
+    "image": "/images/products/mì-hảo-hảo-tôm-chua-cay.jpg",
+    "images": [
+      "/images/products/mì-hảo-hảo-tôm-chua-cay-1.jpg",
+      "/images/products/mì-hảo-hảo-tôm-chua-cay-2.jpg"
+    ],
+    "category": {
+      "$oid": "6840b1f3a7c9d4e5f6b1c004"
+    },
+    "brand": {
+      "$oid": "6840b1f3a7c9d4e5f6b2d005"
+    },
+    "soldQuantity": 240,
+    "isActive": true
+  },
+  {
+    "_id": {
+      "$oid": "6840b1f3a7c9d4e5f6a2c006"
+    },
+    "name": "Nước rửa chén Sunlight 750g",
+    "description": "Nước rửa chén hương chanh.",
+    "price": 42000,
+    "discountPrice": 39000,
+    "stock": 95,
+    "image": "/images/products/nước-rửa-chén-sunlight-750g.jpg",
+    "images": [
+      "/images/products/nước-rửa-chén-sunlight-750g-1.jpg",
+      "/images/products/nước-rửa-chén-sunlight-750g-2.jpg"
+    ],
+    "category": {
+      "$oid": "6840b1f3a7c9d4e5f6b1c005"
+    },
+    "brand": {
+      "$oid": "6840b1f3a7c9d4e5f6b2d006"
+    },
+    "soldQuantity": 76,
+    "isActive": true
+  },
+  {
+    "_id": {
+      "$oid": "6840b1f3a7c9d4e5f6a2c007"
+    },
+    "name": "Bàn chải P/S lông mềm",
+    "description": "Bàn chải đánh răng lông mềm.",
+    "price": 28000,
+    "discountPrice": 25000,
+    "stock": 150,
+    "image": "/images/products/bàn-chải-ps-lông-mềm.jpg",
+    "images": [
+      "/images/products/bàn-chải-ps-lông-mềm-1.jpg",
+      "/images/products/bàn-chải-ps-lông-mềm-2.jpg"
+    ],
+    "category": {
+      "$oid": "6840b1f3a7c9d4e5f6b1c001"
+    },
+    "brand": {
+      "$oid": "6840b1f3a7c9d4e5f6b2d001"
+    },
+    "soldQuantity": 64,
+    "isActive": true
+  },
+  {
+    "_id": {
+      "$oid": "6840b1f3a7c9d4e5f6a2c008"
+    },
+    "name": "Bột giặt OMO 5.5kg",
+    "description": "Bột giặt sạch vết bẩn cứng đầu.",
+    "price": 210000,
+    "discountPrice": 199000,
+    "stock": 40,
+    "image": "/images/products/bột-giặt-omo-5.5kg.jpg",
+    "images": [
+      "/images/products/bột-giặt-omo-5.5kg-1.jpg",
+      "/images/products/bột-giặt-omo-5.5kg-2.jpg"
+    ],
+    "category": {
+      "$oid": "6840b1f3a7c9d4e5f6b1c002"
+    },
+    "brand": {
+      "$oid": "6840b1f3a7c9d4e5f6b2d002"
+    },
+    "soldQuantity": 18,
+    "isActive": true
+  },
+  {
+    "_id": {
+      "$oid": "6840b1f3a7c9d4e5f6a2c009"
+    },
+    "name": "Coca-Cola chai 1.5L",
+    "description": "Nước giải khát có gas chai lớn.",
+    "price": 22000,
+    "discountPrice": 20000,
+    "stock": 180,
+    "image": "/images/products/coca-cola-chai-1.5l.jpg",
+    "images": [
+      "/images/products/coca-cola-chai-1.5l-1.jpg",
+      "/images/products/coca-cola-chai-1.5l-2.jpg"
+    ],
+    "category": {
+      "$oid": "6840b1f3a7c9d4e5f6b1c003"
+    },
+    "brand": {
+      "$oid": "6840b1f3a7c9d4e5f6b2d004"
+    },
+    "soldQuantity": 120,
+    "isActive": true
+  },
+  {
+    "_id": {
+      "$oid": "6840b1f3a7c9d4e5f6a2c010"
+    },
+    "name": "Snack khoai tây vị BBQ",
+    "description": "Snack khoai tây giòn vị BBQ.",
+    "price": 18000,
+    "discountPrice": 16000,
+    "stock": 130,
+    "image": "/images/products/snack-khoai-tây-vị-bbq.jpg",
+    "images": [
+      "/images/products/snack-khoai-tây-vị-bbq-1.jpg",
+      "/images/products/snack-khoai-tây-vị-bbq-2.jpg"
+    ],
+    "category": {
+      "$oid": "6840b1f3a7c9d4e5f6b1c004"
+    },
+    "brand": {
+      "$oid": "6840b1f3a7c9d4e5f6b2d005"
+    },
+    "soldQuantity": 55,
+    "isActive": true
+  }
+]
