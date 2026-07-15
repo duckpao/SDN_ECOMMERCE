@@ -39,8 +39,8 @@
                   <button className="btn btn-sm btn-outline-dark" onClick={() => onEdit(row)} title="Sua">
                     <i className="bi bi-pencil"></i>
                   </button>
-                  <button className="btn btn-sm btn-outline-danger" onClick={() => onDelete(row)} title="Vo hieu hoa">
-                    <i className="bi bi-eye-slash"></i>
+                  <button className="btn btn-sm btn-outline-danger" onClick={() => onDelete(row)} title="Xoa">
+                    <i className="bi bi-trash"></i>
                   </button>
                 </div>
               </td>

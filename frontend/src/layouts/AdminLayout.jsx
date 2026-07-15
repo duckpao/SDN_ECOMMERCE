@@ -1,4 +1,4 @@
-﻿import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 import { Navigate, Outlet, Link } from "react-router-dom";
 import AdminSidebar from "../components/AdminSidebar";
 
@@ -19,8 +19,17 @@ export default function AdminLayout() {
             <i className="bi bi-building me-2"></i>Quan ly
           </span>
           <div className="ms-auto d-flex align-items-center gap-3">
-            <span className="small text-muted">
-              <i className="bi bi-person-circle me-1"></i>
+            <span className="small text-muted d-flex align-items-center gap-2">
+              {user.avatar ? (
+                <img
+                  src={user.avatar}
+                  alt={user.fullName}
+                  className="rounded-circle border"
+                  style={{ width: 32, height: 32, objectFit: "cover" }}
+                />
+              ) : (
+                <i className="bi bi-person-circle fs-5"></i>
+              )}
               {user.fullName}
             </span>
             <span className="badge bg-dark">{user.role}</span>

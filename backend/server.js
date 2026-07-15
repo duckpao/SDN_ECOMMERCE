@@ -10,8 +10,15 @@ connectDB();
 
 app.use(cors());
 app.use(morgan('dev'));
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
 app.use('/', router);
+
+app.use((err, req, res, next) => {
+  if (err.type === 'entity.too.large') {
+    return res.status(413).json({ message: 'Avatar image is too large. Please choose an image under 10MB.' });
+  }
+  return next(err);
+});
 
 app.get('/', (req, res) => {
   res.status(200).json({ message: 'Welcome to SDN Ecommerce API' });
