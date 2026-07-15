@@ -25,16 +25,23 @@ export default function Cart() {
     fetchCart();
   }, []);
 
-  const handleUpdateQuantity = async (productId, currentQuantity, change) => {
-    // Nếu số lượng hiện tại là 1 mà còn đòi trừ tiếp thì chặn luôn
-    if (currentQuantity + change < 1) return;
+  const handleUpdateQuantity = async (productId, currentQuantity, change, stock) => {
+    const newQuantity = currentQuantity + change;
+    if (newQuantity < 1) return;
+
+    // Chặn ngay trên giao diện nếu số lượng sau khi cộng vượt quá tồn kho
+    if (newQuantity > stock) {
+      alert(`Xin lỗi! Sản phẩm này chỉ còn tối đa ${stock} sản phẩm trong kho.`);
+      return;
+    }
 
     try {
-      // Gọi API cộng thêm hoặc trừ đi đúng 1 đơn vị (biến change)
+      // Gọi API tăng/giảm số lượng
       await api.post("/carts/add", { productId, quantity: change });
-      fetchCart(); // Load lại giỏ hàng để cập nhật số tiền
+      fetchCart(); // Load lại giỏ hàng
     } catch (error) {
-      alert("Cập nhật thất bại");
+      // Hiển thị lỗi từ backend nếu backend chặn
+      alert(error.response?.data?.message || "Cập nhật thất bại");
     }
   };
 
@@ -83,19 +90,23 @@ export default function Cart() {
                     </button>
                   </div>
                   <div className="d-flex align-items-center gap-3 mt-2">
-                    {/* Nút trừ: Truyền change là -1 */}
+                    {/* Nút trừ số lượng */}
                     <button
                       className="btn btn-sm btn-outline-dark"
-                      onClick={() => handleUpdateQuantity(item.product._id, item.quantity, -1)}
-                    >-</button>
+                      onClick={() => handleUpdateQuantity(item.product._id, item.quantity, -1, item.product.stock)}
+                    >
+                      -
+                    </button>
 
                     <span className="fw-bold">{item.quantity}</span>
 
-                    {/* Nút cộng: Truyền change là 1 */}
+                    {/* Nút cộng số lượng */}
                     <button
                       className="btn btn-sm btn-outline-dark"
-                      onClick={() => handleUpdateQuantity(item.product._id, item.quantity, 1)}
-                    >+</button>
+                      onClick={() => handleUpdateQuantity(item.product._id, item.quantity, 1, item.product.stock)}
+                    >
+                      +
+                    </button>
                   </div>
                 </div>
               </div>
