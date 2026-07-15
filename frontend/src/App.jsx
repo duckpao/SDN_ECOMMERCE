@@ -10,6 +10,7 @@ import Overview from "./pages/admin/Overview";
 import BrandList from "./pages/admin/brands/BrandList";
 import CategoryList from "./pages/admin/categories/CategoryList";
 import CartList from "./pages/admin/carts/CartList";
+import Products from "./pages/public/Products";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "./App.css";
@@ -20,8 +21,10 @@ export default function App() {
       <AuthProvider>
         <Routes>
           {/* Public routes */}
+          {/* Public routes */}
           <Route element={<PublicLayout />}>
             <Route path="/" element={<Home />} />
+            <Route path="/products" element={<Products />} /> {/* Thêm dòng này */}
           </Route>
 
           {/* Auth routes (full screen) */}

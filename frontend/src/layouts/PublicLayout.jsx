@@ -1,6 +1,6 @@
-﻿import { Link } from "react-router-dom";
+﻿import { Link, Outlet } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { Outlet } from 'react-router-dom';
+
 export default function PublicLayout() {
   const { user, logout } = useAuth();
 
@@ -12,6 +12,12 @@ export default function PublicLayout() {
             <i className="bi bi-shop me-2"></i>SDN Ecommerce
           </Link>
           <div className="d-flex align-items-center gap-2">
+
+            {/* Đã bổ sung nút Sản phẩm */}
+            <Link to="/products" className="btn btn-outline-light btn-sm me-1">
+              <i className="bi bi-box-seam me-1"></i>Sản phẩm
+            </Link>
+
             {user ? (
               <>
                 <Link to="/dashboard" className="btn btn-outline-light btn-sm">
@@ -23,17 +29,17 @@ export default function PublicLayout() {
                     <i className="bi bi-gear me-1"></i>Admin
                   </Link>
                 )}
-                <button className="btn btn-outline-light btn-sm" onClick={logout}>
+                <button className="btn btn-outline-light btn-sm" onClick={logout} title="Đăng xuất">
                   <i className="bi bi-box-arrow-right"></i>
                 </button>
               </>
             ) : (
               <>
                 <Link to="/login" className="btn btn-outline-light btn-sm">
-                  <i className="bi bi-box-arrow-in-right me-1"></i>Dang nhap
+                  <i className="bi bi-box-arrow-in-right me-1"></i>Đăng nhập
                 </Link>
                 <Link to="/register" className="btn btn-light btn-sm text-dark">
-                  <i className="bi bi-person-plus me-1"></i>Dang ky
+                  <i className="bi bi-person-plus me-1"></i>Đăng ký
                 </Link>
               </>
             )}
