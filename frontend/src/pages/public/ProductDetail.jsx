@@ -63,6 +63,23 @@ export default function ProductDetail() {
   const handleDecrease = () => setQuantity(prev => (prev > 1 ? prev - 1 : 1));
   const handleIncrease = () => setQuantity(prev => (prev < product.stock ? prev + 1 : prev));
 
+  const handleAddToCart = async () => {
+    try {
+      // Gửi productId và quantity lên backend
+      await api.post("/carts/add", {
+        productId: product._id,
+        quantity: quantity
+      });
+      alert("Đã thêm sản phẩm vào giỏ hàng thành công!");
+    } catch (error) {
+      if (error.response?.status === 401) {
+        alert("Bạn chưa đăng nhập. Vui lòng đăng nhập để mua hàng.");
+      } else {
+        alert("Có lỗi xảy ra: " + (error.response?.data?.message || "Lỗi server"));
+      }
+    }
+  };
+
   return (
     <div className="bg-white min-vh-100 pb-5">
       {/* Breadcrumb */}
@@ -183,7 +200,7 @@ export default function ProductDetail() {
                     <button
                       className="btn btn-dark btn-lg w-100 rounded-pill fw-semibold shadow-sm"
                       disabled={product.stock === 0}
-                      onClick={() => alert(`Đã thêm ${quantity} sản phẩm vào giỏ hàng!`)}
+                      onClick={handleAddToCart}
                     >
                       {product.stock > 0 ? (
                         <><i className="bi bi-cart-plus me-2"></i>Thêm vào giỏ hàng</>
