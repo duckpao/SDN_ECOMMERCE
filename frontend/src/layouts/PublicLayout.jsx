@@ -1,5 +1,6 @@
 ﻿import { Link, Outlet } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { getAvatarSrc } from "../utils/avatar";
 
 export default function PublicLayout() {
   const { user, logout } = useAuth();
@@ -13,9 +14,14 @@ export default function PublicLayout() {
           </Link>
           <div className="d-flex align-items-center gap-2">
             {user ? (
-              <>
-                <Link to="/checkout" className="btn btn-outline-light btn-sm">
-                  <i className="bi bi-credit-card me-1"></i>Thanh toan
+              <div className="d-flex gap-2">
+                <Link to="/profile" className="btn btn-light rounded-pill fw-medium">
+                  {user.avatar ? (
+                    <img className="avatar-xs me-2" src={getAvatarSrc(user.avatar)} alt={user.fullName} />
+                  ) : (
+                    <i className="bi bi-person-circle me-2 text-primary"></i>
+                  )}
+                  {user.fullName}
                 </Link>
                 <Link to="/my-orders" className="btn btn-outline-light btn-sm">
                   <i className="bi bi-receipt me-1"></i>Don hang
