@@ -5,17 +5,17 @@ import AdminLayout from "./layouts/AdminLayout";
 import Home from "./pages/public/Home";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
-import Dashboard from "./pages/user/Dashboard";
+import Profile from "./pages/user/Profile";
 import Overview from "./pages/admin/Overview";
-import CustomerList from "./pages/admin/users/CustomerList";
-import StaffList from "./pages/admin/users/StaffList";
 import BrandList from "./pages/admin/brands/BrandList";
 import CategoryList from "./pages/admin/categories/CategoryList";
 import CartList from "./pages/admin/carts/CartList";
+import Products from "./pages/public/Products";
+import ProductDetail from "./pages/public/ProductDetail";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "./App.css";
-
+import Orders from "./pages/user/Orders";
 export default function App() {
   return (
     <BrowserRouter>
@@ -24,6 +24,8 @@ export default function App() {
           {/* Public routes */}
           <Route element={<PublicLayout />}>
             <Route path="/" element={<Home />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/products/:id" element={<ProductDetail />} />
           </Route>
 
           {/* Auth routes (full screen) */}
@@ -31,14 +33,11 @@ export default function App() {
           <Route path="/register" element={<Register />} />
 
           {/* User dashboard */}
-          <Route path="/dashboard" element={<Dashboard />} />
-
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/orders" element={<Orders />} />
           {/* Admin routes */}
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<Overview />} />
-            <Route path="customers" element={<CustomerList />} />
-            <Route path="staffs" element={<StaffList />} />
-            <Route path="users" element={<Navigate to="/admin/customers" />} />
             <Route path="brands" element={<BrandList />} />
             <Route path="categories" element={<CategoryList />} />
             <Route path="carts" element={<CartList />} />
