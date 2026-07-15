@@ -5,9 +5,8 @@ const getAllCategorys = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
-    const keyword = req.query.search || "";
-    const filter = { isActive: true };
-    if (keyword) filter.name = { $regex: keyword, $options: "i" };
+    const keyword = req.query.search || '';
+    const filter = keyword ? { name: { $regex: keyword, $options: 'i' } } : {};
 
     const total = await Category.countDocuments(filter);
     const data = await Category.find(filter).skip(skip).limit(limit);
@@ -67,9 +66,9 @@ const updateCategory = async (req, res) => {
 
 const deleteCategory = async (req, res) => {
   try {
-    const data = await Category.findByIdAndUpdate(req.params.id, { isActive: false }, { new: true });
+    const data = await Category.findByIdAndDelete(req.params.id);
     if (!data) return res.status(404).json({ message: 'Category not found' });
-    return res.status(200).json({ message: "Disable category successfully" });
+    return res.status(200).json({ message: 'Delete category successfully' });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
