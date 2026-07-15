@@ -8,12 +8,6 @@ import Pagination from "../../../components/Pagination";
 const columns = [
   { key: "name", label: "Ten danh muc" },
   { key: "description", label: "Mo ta" },
-  {
-    key: "isActive", label: "Trang thai",
-    render: (r) => r.isActive
-      ? <span className="badge bg-success">Hoat dong</span>
-      : <span className="badge bg-secondary">An</span>,
-  },
 ];
 
 export default function CategoryList() {
@@ -24,8 +18,8 @@ export default function CategoryList() {
   const [showModal, setShowModal] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [editItem, setEditItem] = useState(null);
-  const [deleteTarget, setDeleteTarget] = useState(null);
-  const [form, setForm] = useState({ name: "", description: "", isActive: true });
+  const [disableTarget, setDisableTarget] = useState(null);
+  const [form, setForm] = useState({ name: "", description: "" });
   const [submitting, setSubmitting] = useState(false);
 
   const fetchData = async (p) => {
@@ -43,13 +37,13 @@ export default function CategoryList() {
 
   const openCreate = () => {
     setEditItem(null);
-    setForm({ name: "", description: "", isActive: true });
+    setForm({ name: "", description: "" });
     setShowModal(true);
   };
 
   const openEdit = (item) => {
     setEditItem(item);
-    setForm({ name: item.name, description: item.description || "", isActive: item.isActive });
+    setForm({ name: item.name, description: item.description || "" });
     setShowModal(true);
   };
 
@@ -65,12 +59,12 @@ export default function CategoryList() {
     finally { setSubmitting(false); }
   };
 
-  const confirmDelete = (item) => { setDeleteTarget(item); setShowConfirm(true); };
+  const confirmDisable = (item) => { setDisableTarget(item); setShowConfirm(true); };
 
-  const handleDelete = async () => {
+  const handleDisable = async () => {
     try {
-      await api.delete("/categories/" + deleteTarget._id);
-      setShowConfirm(false); setDeleteTarget(null);
+      await api.delete("/categories/" + disableTarget._id);
+      setShowConfirm(false); setDisableTarget(null);
       fetchData(page);
     } catch (err) { alert(err.response?.data?.message || "Loi"); }
   };
@@ -85,7 +79,7 @@ export default function CategoryList() {
       </div>
       <div className="card border-0 shadow-sm">
         <div className="card-body">
-          <DataTable columns={columns} data={data} onEdit={openEdit} onDelete={confirmDelete} loading={loading} />
+          <DataTable columns={columns} data={data} onEdit={openEdit} onDelete={confirmDisable} loading={loading} />
           <div className="mt-3">
             <Pagination page={page} totalPages={totalPages} onChange={setPage} />
           </div>
@@ -104,16 +98,11 @@ export default function CategoryList() {
           <textarea className="form-control" rows="2" value={form.description}
             onChange={(e) => setForm({ ...form, description: e.target.value })} />
         </div>
-        <div className="form-check form-switch">
-          <input className="form-check-input" type="checkbox" id="catActive"
-            checked={form.isActive} onChange={(e) => setForm({ ...form, isActive: e.target.checked })} />
-          <label className="form-check-label" htmlFor="catActive">Hoat dong</label>
-        </div>
       </CrudModal>
 
-      <ConfirmModal show={showConfirm} title="Xoa danh muc"
-        message={"Ban co chac muon xoa danh muc \"" + (deleteTarget?.name || "") + "\"?"}
-        onConfirm={handleDelete} onCancel={() => { setShowConfirm(false); setDeleteTarget(null); }} />
+      <ConfirmModal show={showConfirm} title="Vo hieu hoa danh muc"
+        message={"Ban co chac muon an danh muc \"" + (disableTarget?.name || "") + "\"?"}
+        onConfirm={handleDisable} onCancel={() => { setShowConfirm(false); setDisableTarget(null); }} />
     </div>
   );
 }

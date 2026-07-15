@@ -1,6 +1,7 @@
 ﻿import { useState, useEffect } from "react";
 import api from "../../../api";
 import Pagination from "../../../components/Pagination";
+import ConfirmModal from "../../../components/ConfirmModal";
 
 export default function CartList() {
   const [data, setData] = useState([]);
@@ -8,6 +9,8 @@ export default function CartList() {
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
   const [detail, setDetail] = useState(null);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [disableTarget, setDisableTarget] = useState(null);
 
   const fetchData = async (p) => {
     setLoading(true);
@@ -21,6 +24,16 @@ export default function CartList() {
   };
 
   useEffect(() => { fetchData(page); }, [page]);
+
+  const confirmDisable = (cart) => { setDisableTarget(cart); setShowConfirm(true); };
+
+  const handleDisable = async () => {
+    try {
+      await api.delete("/carts/" + disableTarget._id);
+      setShowConfirm(false); setDisableTarget(null);
+      fetchData(page);
+    } catch (err) { alert(err.response?.data?.message || "Loi"); }
+  };
 
   return (
     <div>
@@ -45,6 +58,7 @@ export default function CartList() {
                     <th>So luong SP</th>
                     <th>Tong tien</th>
                     <th style={{ width: 100 }}>Chi tiet</th>
+                    <th style={{ width: 80 }}>An</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -55,13 +69,16 @@ export default function CartList() {
                         <br /><span className="small text-muted">{cart.user?.email}</span>
                       </td>
                       <td>{cart.items?.length || 0}</td>
-                      <td className="fw-bold">
-                        {(cart.totalAmount || 0).toLocaleString()}d
-                      </td>
+                      <td className="fw-bold">{(cart.totalAmount || 0).toLocaleString()}d</td>
                       <td>
                         <button className="btn btn-sm btn-outline-dark"
                           onClick={() => setDetail(detail?._id === cart._id ? null : cart)}>
                           <i className={"bi " + (detail?._id === cart._id ? "bi-chevron-up" : "bi-chevron-down")}></i>
+                        </button>
+                      </td>
+                      <td>
+                        <button className="btn btn-sm btn-outline-danger" onClick={() => confirmDisable(cart)} title="An">
+                          <i className="bi bi-eye-slash"></i>
                         </button>
                       </td>
                     </tr>
@@ -71,7 +88,6 @@ export default function CartList() {
             </div>
           )}
 
-          {/* Detail expand */}
           {detail && (
             <div className="mt-3 p-3 bg-light rounded">
               <h6 className="fw-bold mb-3">
@@ -112,6 +128,10 @@ export default function CartList() {
           </div>
         </div>
       </div>
+
+      <ConfirmModal show={showConfirm} title="Vo hieu hoa gio hang"
+        message={"Ban co chac muon an gio hang cua \"" + (disableTarget?.user?.fullName || "") + "\"?"}
+        onConfirm={handleDisable} onCancel={() => { setShowConfirm(false); setDisableTarget(null); }} />
     </div>
   );
 }

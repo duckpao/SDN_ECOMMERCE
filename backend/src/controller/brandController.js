@@ -6,7 +6,8 @@ const getAllBrands = async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
     const keyword = req.query.search || "";
-    const filter = keyword ? { name: { $regex: keyword, $options: "i" } } : {};
+    const filter = { isActive: true };
+    if (keyword) filter.name = { $regex: keyword, $options: "i" };
 
     const total = await Brand.countDocuments(filter);
     const data = await Brand.find(filter).skip(skip).limit(limit);
@@ -71,9 +72,9 @@ const updateBrand = async (req, res) => {
 
 const deleteBrand = async (req, res) => {
   try {
-    const data = await Brand.findByIdAndDelete(req.params.id);
+    const data = await Brand.findByIdAndUpdate(req.params.id, { isActive: false }, { new: true });
     if (!data) return res.status(404).json({ message: "Brand not found" });
-    return res.status(200).json({ message: "Delete brand successfully" });
+    return res.status(200).json({ message: "Disable brand successfully" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
