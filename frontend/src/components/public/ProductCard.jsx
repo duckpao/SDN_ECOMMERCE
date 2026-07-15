@@ -2,7 +2,7 @@
 
 export default function ProductCard({ product }) {
   const normalizeImage = (value) => {
-    if (!value) return "/images/products/download.webp"; // Đổi về link này
+    if (!value) return "/images/products/download.webp";
     return value;
   };
 
@@ -14,54 +14,62 @@ export default function ProductCard({ product }) {
     : 0;
 
   return (
-    <div className="col-12 col-sm-6 col-lg-4">
-      <div className="card h-100 border-0 shadow-sm overflow-hidden">
-        <div className="position-relative bg-light" style={{ minHeight: "220px" }}>
+    <div className="col-6 col-md-4 col-lg-3">
+      <div
+        className="card h-100 border-0 shadow-sm rounded-4 overflow-hidden"
+        style={{ cursor: "pointer", transition: "transform 0.2s, box-shadow 0.2s" }}
+        onMouseOver={(e) => {
+          e.currentTarget.style.transform = "translateY(-5px)";
+          e.currentTarget.classList.add('shadow');
+        }}
+        onMouseOut={(e) => {
+          e.currentTarget.style.transform = "translateY(0)";
+          e.currentTarget.classList.remove('shadow');
+        }}
+      >
+        <div className="position-relative bg-white p-3 pb-0">
           <img
             src={imageSrc}
             alt={product.name}
-            className="card-img-top"
+            className="card-img-top rounded-4"
             style={{
               aspectRatio: "1 / 1",
               objectFit: "cover",
-              minHeight: "220px",
               width: "100%",
             }}
             loading="lazy"
             onError={(e) => {
               e.target.onerror = null;
-              e.target.src = "/images/products/download.webp"; // Đổi về link này
+              e.target.src = "/images/products/download.webp";
             }}
           />
           {hasDiscount && (
-            <span className="position-absolute top-0 start-0 badge bg-danger m-2">
+            <span className="position-absolute top-0 end-0 badge bg-danger rounded-pill m-3 px-2 py-1 shadow-sm">
               -{discountPercent}%
             </span>
           )}
         </div>
-        <div className="card-body d-flex flex-column">
+        <div className="card-body p-3 d-flex flex-column">
           <div className="mb-2">
-            <h6 className="card-title mb-1 text-truncate" title={product.name}>{product.name}</h6>
-            <p className="text-muted small mb-0">
+            <p className="text-muted small mb-1">
               {product.brand?.name || "Thương hiệu"}
             </p>
+            <h6 className="card-title mb-1 text-truncate fw-semibold" title={product.name}>
+              {product.name}
+            </h6>
           </div>
 
           <div className="mt-auto">
             {hasDiscount ? (
-              <div className="d-flex align-items-center gap-2">
-                <span className="fw-bold text-danger fs-5">{displayPrice.toLocaleString()}đ</span>
+              <div className="d-flex flex-column">
+                <span className="fw-bold text-danger fs-5">{displayPrice.toLocaleString()} ₫</span>
                 <span className="text-muted text-decoration-line-through small">
-                  {product.price.toLocaleString()}đ
+                  {product.price.toLocaleString()} ₫
                 </span>
               </div>
             ) : (
-              <span className="fw-bold text-dark fs-5">{displayPrice.toLocaleString()}đ</span>
+              <span className="fw-bold text-dark fs-5 mt-3 d-block">{displayPrice.toLocaleString()} ₫</span>
             )}
-            <div className="mt-2 text-muted small">
-              <i className="bi bi-tag me-1"></i>
-              {product.category?.name || "Danh mục"}
-            </div>
           </div>
         </div>
       </div>

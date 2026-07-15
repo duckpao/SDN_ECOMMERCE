@@ -84,11 +84,8 @@ export default function Products() {
     <div className="container py-5">
       <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
         <div>
-          <h2 className="fw-bold mb-1">Tất cả sản phẩm</h2>
-          <p className="text-muted mb-0">Khám phá sản phẩm theo nhu cầu của bạn</p>
-        </div>
-        <div className="badge bg-dark rounded-pill px-3 py-2">
-          {filteredProducts.length} sản phẩm
+          <h2 className="fw-black mb-1">Tất cả sản phẩm</h2>
+          <p className="text-muted mb-0">Khám phá {filteredProducts.length} sản phẩm theo nhu cầu của bạn</p>
         </div>
       </div>
 
@@ -107,17 +104,20 @@ export default function Products() {
 
       {loading ? (
         <div className="text-center py-5">
-          <div className="spinner-border text-dark" role="status">
+          <div className="spinner-border text-primary" role="status">
             <span className="visually-hidden">Loading...</span>
           </div>
         </div>
       ) : filteredProducts.length === 0 ? (
-        <div className="text-center py-5 border rounded-4 bg-light">
-          <h5 className="fw-semibold">Không có sản phẩm phù hợp</h5>
-          <p className="text-muted">Hãy thử thay đổi bộ lọc hoặc từ khóa tìm kiếm.</p>
+        <div className="text-center py-5 border-0 rounded-4 bg-white shadow-sm mt-4">
+          <div className="py-5">
+            <i className="bi bi-search display-4 text-muted mb-3 d-block"></i>
+            <h5 className="fw-semibold">Không tìm thấy sản phẩm</h5>
+            <p className="text-muted">Hãy thử thay đổi bộ lọc hoặc từ khóa tìm kiếm khác nhé.</p>
+          </div>
         </div>
       ) : (
-        <div className="row g-4">
+        <div className="row g-4 mt-1">
           {filteredProducts.map((product) => (
             <ProductCard key={product._id} product={product} />
           ))}
