@@ -1,6 +1,7 @@
 ﻿import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useState } from "react";
+import { getAvatarSrc } from "../../utils/avatar";
 
 import ProfileInfo from "./ProfileInfo";
 import AddressInfo from "./AddressInfo";
@@ -39,7 +40,11 @@ export default function Profile() {
             )}
 
             <span className="text-white">
-              <i className="bi bi-person-circle me-1"></i>
+              {user.avatar ? (
+                <img className="avatar-xs me-1" src={getAvatarSrc(user.avatar)} alt={user.fullName} />
+              ) : (
+                <i className="bi bi-person-circle me-1"></i>
+              )}
               {user.fullName}
             </span>
 
@@ -58,17 +63,21 @@ export default function Profile() {
           <div className="col-lg-4">
             <div className="card shadow-sm border-0">
               <div className="card-body text-center">
-                <div
-                  className="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto mb-3"
-                  style={{
-                    width: 90,
-                    height: 90,
-                    fontSize: 35,
-                    fontWeight: "bold",
-                  }}
-                >
-                  {user.fullName.charAt(0).toUpperCase()}
-                </div>
+                {user.avatar ? (
+                  <img className="avatar-xl mx-auto mb-3" src={getAvatarSrc(user.avatar)} alt={user.fullName} />
+                ) : (
+                  <div
+                    className="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto mb-3"
+                    style={{
+                      width: 90,
+                      height: 90,
+                      fontSize: 35,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {user.fullName.charAt(0).toUpperCase()}
+                  </div>
+                )}
 
                 <h4>{user.fullName}</h4>
 

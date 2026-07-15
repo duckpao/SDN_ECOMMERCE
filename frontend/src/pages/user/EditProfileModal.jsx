@@ -48,14 +48,21 @@ export default function EditProfileModal({
       return;
     }
 
-    const avatar = await readAvatarFile(file);
-    setForm({ ...form, avatar });
-    setErrors({ ...errors, avatar: "" });
+    try {
+      const avatar = await readAvatarFile(file);
+      setForm({ ...form, avatar });
+      setErrors({ ...errors, avatar: "" });
+    } catch {
+      setErrors({ ...errors, avatar: "Khong doc duoc file avatar" });
+      e.target.value = "";
+    }
   };
 
   const handleSave = async () => {
     const nextErrors = {};
     if (!form.fullName.trim()) nextErrors.fullName = "Full name is required";
+    else if (form.fullName.trim().length < 2) nextErrors.fullName = "Full name must be at least 2 characters";
+    else if (form.fullName.trim().length > 80) nextErrors.fullName = "Full name must be 80 characters or fewer";
     if (form.phone.trim() && !/^[0-9+\-\s()]{9,15}$/.test(form.phone.trim())) {
       nextErrors.phone = "Invalid phone number";
     }

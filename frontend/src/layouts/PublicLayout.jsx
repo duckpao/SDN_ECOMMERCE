@@ -1,9 +1,15 @@
-﻿import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { getAvatarSrc } from "../utils/avatar";
 
 export default function PublicLayout() {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   return (
     <div className="d-flex flex-column min-vh-100 bg-white text-dark">
@@ -26,18 +32,15 @@ export default function PublicLayout() {
                 <Link to="/my-orders" className="btn btn-outline-light btn-sm">
                   <i className="bi bi-receipt me-1"></i>Don hang
                 </Link>
-                <Link to="/dashboard" className="btn btn-outline-light btn-sm">
-                  <i className="bi bi-person-circle me-1"></i>{user.fullName}
-                </Link>
                 {user.role === "admin" && (
                   <Link to="/admin" className="btn btn-outline-light btn-sm">
                     <i className="bi bi-gear me-1"></i>Admin
                   </Link>
                 )}
-                <button className="btn btn-outline-light btn-sm" onClick={logout}>
+                <button className="btn btn-outline-light btn-sm" onClick={handleLogout}>
                   <i className="bi bi-box-arrow-right"></i>
                 </button>
-              </>
+              </div>
             ) : (
               <>
                 <Link to="/login" className="btn btn-outline-light btn-sm">

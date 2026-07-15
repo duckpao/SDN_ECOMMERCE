@@ -14,6 +14,7 @@ export default function Register() {
     const nextErrors = {};
     if (!form.fullName.trim()) nextErrors.fullName = "Vui long nhap ho ten";
     else if (form.fullName.trim().length < 2) nextErrors.fullName = "Ho ten toi thieu 2 ky tu";
+    else if (form.fullName.trim().length > 80) nextErrors.fullName = "Ho ten toi da 80 ky tu";
     if (!form.email.trim()) nextErrors.email = "Vui long nhap email";
     else if (!/^\S+@\S+\.\S+$/.test(form.email.trim())) nextErrors.email = "Email khong hop le";
     if (!form.password) nextErrors.password = "Vui long nhap mat khau";
@@ -40,8 +41,13 @@ export default function Register() {
       return;
     }
 
-    const avatar = await readAvatarFile(file);
-    handleChange("avatar", avatar);
+    try {
+      const avatar = await readAvatarFile(file);
+      handleChange("avatar", avatar);
+    } catch {
+      setErrors({ ...errors, avatar: "Khong doc duoc file avatar" });
+      event.target.value = "";
+    }
   };
 
   const handleSubmit = async (e) => {

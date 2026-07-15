@@ -9,6 +9,8 @@ const {
   login,
   getProfile,
   updateProfile,
+  getCustomers,
+  getEmployees,
   addAddress,
   updateAddress,
   deleteAddress,
@@ -31,6 +33,8 @@ UserRouter.delete("/addresses/:addressId", auth, deleteAddress);
 UserRouter.patch("/addresses/:addressId/default", auth, setDefaultAddress);
 
 // Admin-only user management
+UserRouter.get("/customers", auth, authorize("admin"), getCustomers);
+UserRouter.get("/employees", auth, authorize("admin"), getEmployees);
 UserRouter.get("/", auth, authorize("admin"), getAllUsers);
 UserRouter.get("/:id", auth, getUserById);
 UserRouter.post("/", auth, authorize("admin"), createUser);

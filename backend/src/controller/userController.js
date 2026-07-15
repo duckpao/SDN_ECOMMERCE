@@ -5,9 +5,10 @@ const genToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "7d" });
 
 const validRoles = ["customer", "staff", "admin"];
-const dataUrlImageRegex = /^data:image\/(png|jpeg|jpg|webp);base64,[A-Za-z0-9+/=]+$/;
+const dataUrlImageRegex = /^data:image\/(png|jpeg|jpg|webp);base64,([A-Za-z0-9+/=]+)$/;
 const emailRegex = /^\S+@\S+\.\S+$/;
 const phoneRegex = /^[0-9+\-\s()]{9,15}$/;
+const MAX_AVATAR_BYTES = 700 * 1024;
 
 const sendValidationErrors = (res, errors) =>
   res.status(400).json({ message: "Validation failed", errors });
@@ -46,9 +47,11 @@ const normalizeUserPayload = (body, options = {}) => {
 
   if (body.avatar !== undefined) {
     const avatar = String(body.avatar || "").trim();
-    if (avatar && !dataUrlImageRegex.test(avatar)) errors.avatar = "Avatar must be a PNG, JPG, JPEG, or WEBP image";
-    else if (avatar.length > 1024 * 1024) errors.avatar = "Avatar image is too large";
-    else payload.avatar = avatar;
+    const match = avatar.match(dataUrlImageRegex);
+    if (avatar && !match) errors.avatar = "Avatar must be a PNG, JPG, JPEG, or WEBP image";
+    else if (match && Buffer.byteLength(match[1], "base64") > MAX_AVATAR_BYTES) {
+      errors.avatar = "Avatar image must be 700KB or smaller";
+    } else payload.avatar = avatar;
   }
 
   if (allowRole && body.role !== undefined) {
@@ -166,6 +169,16 @@ const getAllUsers = async (req, res) => {
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
+};
+
+const getCustomers = async (req, res) => {
+  req.query.role = "customer";
+  return getAllUsers(req, res);
+};
+
+const getEmployees = async (req, res) => {
+  req.query.role = "employee";
+  return getAllUsers(req, res);
 };
 
 const getUserById = async (req, res) => {
@@ -403,6 +416,8 @@ module.exports = {
   getProfile,
   updateProfile,
   getAllUsers,
+  getCustomers,
+  getEmployees,
   getUserById,
   createUser,
   updateUser,
