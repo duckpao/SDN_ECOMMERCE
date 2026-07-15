@@ -10,6 +10,8 @@ import Overview from "./pages/admin/Overview";
 import BrandList from "./pages/admin/brands/BrandList";
 import CategoryList from "./pages/admin/categories/CategoryList";
 import CartList from "./pages/admin/carts/CartList";
+import Products from "./pages/public/Products";
+import ProductDetail from "./pages/public/ProductDetail";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "./App.css";
@@ -22,6 +24,8 @@ export default function App() {
           {/* Public routes */}
           <Route element={<PublicLayout />}>
             <Route path="/" element={<Home />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/products/:id" element={<ProductDetail />} />
           </Route>
 
           {/* Auth routes (full screen) */}
