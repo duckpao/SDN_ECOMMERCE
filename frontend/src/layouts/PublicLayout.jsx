@@ -1,64 +1,61 @@
-﻿import { Link, Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-
+import { Outlet } from 'react-router-dom';
 export default function PublicLayout() {
   const { user, logout } = useAuth();
 
   return (
-    <div className="d-flex flex-column min-vh-100 bg-light text-dark">
-      {/* Navbar sáng màu, sticky-top để luôn hiển thị khi cuộn */}
-      <nav className="navbar navbar-expand navbar-light bg-white border-bottom sticky-top py-3 shadow-sm">
+    <div className="d-flex flex-column min-vh-100 bg-white text-dark">
+      <nav className="navbar navbar-expand navbar-dark bg-dark shadow-sm">
         <div className="container">
-          <Link className="navbar-brand fw-bolder text-primary fs-4" to="/">
-            <i className="bi bi-shop-window me-2"></i>SDN<span className="text-dark">Store</span>
+          <Link className="navbar-brand fw-bold" to="/">
+            <i className="bi bi-shop me-2"></i>SDN Ecommerce
           </Link>
-          <div className="d-flex align-items-center gap-3">
-            <Link to="/products" className="text-decoration-none text-dark fw-semibold text-hover-primary">
-              <i className="bi bi-grid me-1"></i> Sản phẩm
-            </Link>
-
-            <div className="vr d-none d-sm-block"></div> {/* Dòng kẻ dọc */}
-
+          <div className="d-flex align-items-center gap-2">
             {user ? (
-              <div className="d-flex gap-2">
-                <Link to="/profile" className="btn btn-light rounded-pill fw-medium">
-                  <i className="bi bi-person-circle me-2 text-primary"></i>
+              <>
+                <Link to="/dashboard" className="btn btn-outline-light btn-sm d-flex align-items-center gap-2">
+                  {user.avatar ? (
+                    <img
+                      src={user.avatar}
+                      alt={user.fullName}
+                      className="rounded-circle border"
+                      style={{ width: 24, height: 24, objectFit: "cover" }}
+                    />
+                  ) : (
+                    <i className="bi bi-person-circle"></i>
+                  )}
                   {user.fullName}
                 </Link>
                 {user.role === "admin" && (
-                  <Link to="/admin" className="btn btn-outline-dark rounded-pill fw-medium">
-                    <i className="bi bi-gear"></i>
+                  <Link to="/admin" className="btn btn-outline-light btn-sm">
+                    <i className="bi bi-gear me-1"></i>Admin
                   </Link>
                 )}
-                <button className="btn btn-danger rounded-pill px-3" onClick={logout} title="Đăng xuất">
+                <button className="btn btn-outline-light btn-sm" onClick={logout}>
                   <i className="bi bi-box-arrow-right"></i>
                 </button>
-              </div>
+              </>
             ) : (
-              <div className="d-flex gap-2">
-                <Link to="/login" className="btn btn-light rounded-pill fw-semibold px-4">
-                  Đăng nhập
+              <>
+                <Link to="/login" className="btn btn-outline-light btn-sm">
+                  <i className="bi bi-box-arrow-in-right me-1"></i>Dang nhap
                 </Link>
-                <Link to="/register" className="btn btn-dark rounded-pill fw-semibold px-4 shadow-sm">
-                  Đăng ký
+                <Link to="/register" className="btn btn-light btn-sm text-dark">
+                  <i className="bi bi-person-plus me-1"></i>Dang ky
                 </Link>
-              </div>
+              </>
             )}
           </div>
         </div>
       </nav>
-
-      <main className="flex-grow-1" style={{ backgroundColor: "#f8f9fa" }}>
+      <main className="flex-grow-1">
         <Outlet />
       </main>
-
-      <footer className="bg-white border-top text-dark text-center py-4 mt-auto">
-        <div className="container">
-          <h5 className="fw-bold mb-3"><i className="bi bi-shop-window me-2"></i>SDN Store</h5>
-          <p className="mb-0 text-muted small">
-            &copy; 2026 - Mua sắm trực tuyến hàng chính hãng. Group 5.
-          </p>
-        </div>
+      <footer className="bg-dark text-white text-center py-3">
+        <p className="mb-0 small opacity-50">
+          &copy; 2026 - SDN Ecommerce - Group 5
+        </p>
       </footer>
     </div>
   );

@@ -9,6 +9,12 @@ const columns = [
   { key: "name", label: "Ten thuong hieu" },
   { key: "country", label: "Quoc gia" },
   { key: "description", label: "Mo ta" },
+  {
+    key: "isActive", label: "Trang thai",
+    render: (r) => r.isActive
+      ? <span className="badge bg-success">Hoat dong</span>
+      : <span className="badge bg-secondary">An</span>,
+  },
 ];
 
 export default function BrandList() {
@@ -19,8 +25,8 @@ export default function BrandList() {
   const [showModal, setShowModal] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [editItem, setEditItem] = useState(null);
-  const [disableTarget, setDisableTarget] = useState(null);
-  const [form, setForm] = useState({ name: "", country: "", description: "" });
+  const [deleteTarget, setDeleteTarget] = useState(null);
+  const [form, setForm] = useState({ name: "", country: "", description: "", isActive: true });
   const [submitting, setSubmitting] = useState(false);
 
   const fetchData = async (p) => {
@@ -38,13 +44,13 @@ export default function BrandList() {
 
   const openCreate = () => {
     setEditItem(null);
-    setForm({ name: "", country: "", description: "" });
+    setForm({ name: "", country: "", description: "", isActive: true });
     setShowModal(true);
   };
 
   const openEdit = (item) => {
     setEditItem(item);
-    setForm({ name: item.name, country: item.country || "", description: item.description || "" });
+    setForm({ name: item.name, country: item.country || "", description: item.description || "", isActive: item.isActive });
     setShowModal(true);
   };
 
@@ -64,13 +70,13 @@ export default function BrandList() {
     } finally { setSubmitting(false); }
   };
 
-  const confirmDisable = (item) => { setDisableTarget(item); setShowConfirm(true); };
+  const confirmDelete = (item) => { setDeleteTarget(item); setShowConfirm(true); };
 
-  const handleDisable = async () => {
+  const handleDelete = async () => {
     try {
-      await api.delete("/brands/" + disableTarget._id);
+      await api.delete("/brands/" + deleteTarget._id);
       setShowConfirm(false);
-      setDisableTarget(null);
+      setDeleteTarget(null);
       fetchData(page);
     } catch (err) { alert(err.response?.data?.message || "Loi"); }
   };
@@ -86,7 +92,7 @@ export default function BrandList() {
 
       <div className="card border-0 shadow-sm">
         <div className="card-body">
-          <DataTable columns={columns} data={data} onEdit={openEdit} onDelete={confirmDisable} loading={loading} />
+          <DataTable columns={columns} data={data} onEdit={openEdit} onDelete={confirmDelete} loading={loading} />
           <div className="mt-3">
             <Pagination page={page} totalPages={totalPages} onChange={setPage} />
           </div>
@@ -110,11 +116,16 @@ export default function BrandList() {
           <textarea className="form-control" rows="2" value={form.description}
             onChange={(e) => setForm({ ...form, description: e.target.value })} />
         </div>
+        <div className="form-check form-switch">
+          <input className="form-check-input" type="checkbox" id="brandActive"
+            checked={form.isActive} onChange={(e) => setForm({ ...form, isActive: e.target.checked })} />
+          <label className="form-check-label" htmlFor="brandActive">Hoat dong</label>
+        </div>
       </CrudModal>
 
-      <ConfirmModal show={showConfirm} title="Vo hieu hoa thuong hieu"
-        message={"Ban co chac muon an thuong hieu \"" + (disableTarget?.name || "") + "\"?"}
-        onConfirm={handleDisable} onCancel={() => { setShowConfirm(false); setDisableTarget(null); }} />
+      <ConfirmModal show={showConfirm} title="Xoa thuong hieu"
+        message={"Ban co chac muon xoa thuong hieu \"" + (deleteTarget?.name || "") + "\"?"}
+        onConfirm={handleDelete} onCancel={() => { setShowConfirm(false); setDeleteTarget(null); }} />
     </div>
   );
 }

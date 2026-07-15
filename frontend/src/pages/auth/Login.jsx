@@ -13,7 +13,7 @@ export default function Login() {
     setErr("");
     try {
       const user = await login(form.email, form.password);
-      navigate(user.role === "admin" ? "/admin" : "/");
+      navigate(user.role === "admin" ? "/admin" : "/dashboard");
     } catch (error) {
       setErr(error.response?.data?.message || "Dang nhap that bai");
     }

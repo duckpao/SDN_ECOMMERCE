@@ -2,6 +2,8 @@
 
 const menu = [
   { path: "/admin", label: "Tong quan", icon: "bi-speedometer2" },
+  { path: "/admin/customers", label: "Customer", icon: "bi-person" },
+  { path: "/admin/staffs", label: "Nhan vien", icon: "bi-person-badge" },
   { path: "/admin/brands", label: "Thuong hieu", icon: "bi-tag" },
   { path: "/admin/categories", label: "Danh muc", icon: "bi-grid" },
   { path: "/admin/carts", label: "Gio hang", icon: "bi-cart" },
