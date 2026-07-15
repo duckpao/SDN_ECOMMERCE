@@ -20,7 +20,7 @@
                 Huy
               </button>
               <button className="btn btn-danger" onClick={onConfirm}>
-                <i className="bi bi-trash me-1"></i>Xoa
+                <i className="bi bi-eye-slash me-1"></i>An
               </button>
             </div>
           </div>
