@@ -1,4 +1,5 @@
 const Order = require('../models/order');
+const Product = require("../models/product");
 
 const getAllOrders = async (req, res) => {
   try {
@@ -37,9 +38,28 @@ const getOrderById = async (req, res) => {
 const createOrder = async (req, res) => {
   try {
     const data = await Order.create(req.body);
-    return res.status(201).json({ message: 'Create order successfully', data });
+
+   
+    for (const item of data.items) {
+      await Product.findByIdAndUpdate(
+        item.product,
+        {
+          $inc: {
+            soldQuantity: item.quantity,
+          },
+        }
+      );
+    }
+
+    return res.status(201).json({
+      message: "Create order successfully",
+      data,
+    });
+
   } catch (error) {
-    return res.status(400).json({ message: error.message });
+    return res.status(400).json({
+      message: error.message,
+    });
   }
 };
 
