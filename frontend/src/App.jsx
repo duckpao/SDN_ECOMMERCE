@@ -1,5 +1,5 @@
 ﻿import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { AuthProvider, useAuth } from "./context/AuthContext";
+import { AuthProvider } from "./context/AuthContext";
 import PublicLayout from "./layouts/PublicLayout";
 import AdminLayout from "./layouts/AdminLayout";
 import Home from "./pages/public/Home";
@@ -20,26 +20,19 @@ import ProductDetail from "./pages/public/ProductDetail";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "./App.css";
-
-function PrivateRoute({ children }) {
-  const { user } = useAuth();
-  if (!user) return <Navigate to="/login" replace />;
-  return children;
-}
-
-function PublicRoute({ children }) {
-  const { user } = useAuth();
-  if (user) return <Navigate to="/dashboard" replace />;
-  return children;
-}
-
+import Orders from "./pages/user/Orders";
+import Cart from "./pages/public/Cart";
 export default function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
         <Routes>
+          {/* Public routes */}
           <Route element={<PublicLayout />}>
             <Route path="/" element={<Home />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/products/:id" element={<ProductDetail />} />
+            <Route path="/cart" element={<Cart />} />
           </Route>
 
           <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
@@ -51,6 +44,10 @@ export default function App() {
           <Route path="/my-orders" element={<PrivateRoute><MyOrders /></PrivateRoute>} />
           <Route path="/orders" element={<Navigate to="/my-orders" replace />} />
 
+          {/* User dashboard */}
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/orders" element={<Orders />} />
+          {/* Admin routes */}
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<Overview />} />
             <Route path="orders" element={<OrderList />} />
@@ -62,7 +59,7 @@ export default function App() {
             <Route path="users" element={<Navigate to="/admin/customers" replace />} />
           </Route>
 
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>
