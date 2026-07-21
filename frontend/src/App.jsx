@@ -17,6 +17,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import "./App.css";
 import Orders from "./pages/user/Orders";
 import Cart from "./pages/public/Cart";
+import Checkout from "./pages/public/Checkout";
 export default function App() {
   return (
     <BrowserRouter>
@@ -28,6 +29,7 @@ export default function App() {
             <Route path="/products" element={<Products />} />
             <Route path="/products/:id" element={<ProductDetail />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/checkout" element={<Checkout />} />
           </Route>
 
           {/* Auth routes (full screen) */}
